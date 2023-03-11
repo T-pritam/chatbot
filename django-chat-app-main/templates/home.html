@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+<style>
+  .con{
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 0 20px;
+  border: 1px solid black;
+
+  }
+  .cone{
+  margin: 10px auto;
+  max-width: 800px;
+  padding: 0 20px;
+
+  }
+.container {
+  border: 2px solid #dedede;
+  background-color: #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0 0 0;
+  width: 28vw;
+}
+.container-big {
+  padding: 10px 10px 0 10px;
+  width: 100%;
+  display: block;
+}
+.containerright{
+  border: 2px solid #dedede;
+  background-color: rgba(24, 93, 197, 0.795);
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0 0 33vw;
+  display: block;
+  /* float: right; */
+  width: 20vw;
+}
+.darker {
+  border-color: #ccc;
+}
+.container::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.container img {
+  float: left;
+  max-width: 60px;
+  width: 100%;
+  margin-right: 20px;
+  border-radius: 50%;
+}
+
+.container img.right {
+  float: right;
+  margin-left: 20px;
+  margin-right:0;
+}
+
+.time-right {
+  float: right;
+  color: #aaa;
+}
+.time-left {
+  float: left;
+  color: #999;
+}
+  input[type=text], select {
+  width: 80%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+    input[type=submit] {
+    width: 15%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    }
+
+    input[type=submit]:hover {
+    background-color: #45a049;
+    }
+
+    div {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+    }
+    .display{
+        width: 20vw;
+        height: 60vh;
+        overflow-y: scroll;
+        border: 2px solid #dedede;
+        overflow: scroll;
+    }
+    .containe{
+      border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+    }
+</style>
+<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+</head>
+<body>
+  <nav class="navbar navbar bg-dark bg-body-tertiary" style="margin: 0 0 10px 0;padding: 0;">
+    <div class="container-fluid bg-dark" style="padding: 10px 12px;">
+      <a class="navbar-brand" style="color: #ddd;" href="#"> Hello {{username}}</a>
+      <a class="navbar-brand" style="color: #ddd;" href="#"> PyBot</a>
+      <a class="navbar-brand" style="color: #ddd;" href="{% url 'logout' %}"> Logout </a>
+    </div>
+  </nav>
+  <div class="con">
+<div id="display" style="height: 70vh; overflow: scroll;overflow-x: hidden;">
+
+<!-- <div class="container darker">
+  <b>Tom</b><p>Hello Everyone, How Are You Guys Doing?</p>
+  <span class="time-left">20th, April 2021</span>
+</div> -->
+
+</div>
+
+<script>
+  var objDiv = document.getElementById("display");
+objDiv.scroll = objDiv.scrollHeight;
+$(document).ready(function(){
+
+setInterval(function(){
+    $.ajax({
+        type: 'GET',
+        url : "getMessages/",
+        success: function(response){
+            console.log(response);
+            $("#display").empty();
+            for (var key in response.messages)
+            {
+                if(response.messages[key].user_message == true)
+                var temp="<div class='container-big'><div class='containerright darker'>"+"<p style='margin:0;'>"+response.messages[key].value+"</p></div><span class='time-right'>"+response.messages[key].date+"&nbsp;&nbsp;"+response.messages[key].time+"</span></span></div>";
+                else
+                var temp="<div class='container-big'><div class='container darker'><b>"+"</b><p style='margin:0'>"+response.messages[key].value+"</p></div><span class='time-left'>"+response.messages[key].date+"&nbsp;&nbsp;"+response.messages[key].time+"</span></span></div>";
+                $("#display").append(temp);
+            }
+        },
+        error: function(response){
+            alert('An error occured')
+        }
+    });
+},1000);
+})
+</script>
+
+    <style>
+    input[type=text], select {
+    width: 80%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    overflow: scroll;
+    }
+
+    input[type=submit] {
+    width: 15%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    }
+
+    input[type=submit]:hover {
+    background-color: #45a049;
+    }
+
+    div {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+    }
+    .display{
+        width: 60vw;
+        height: 60vh;
+        overflow-y: scroll;
+        border: 2px solid #dedede;
+        overflow: scroll;
+    }
+    </style>
+    </div>
+    <div class="cone">
+<div class="containe" style="border: 1px solid white ;">
+
+    <form id="post-form">
+        {% csrf_token %}
+        <input type="text" name="message" id="message" width="100px" />
+        <input type="submit" value="Send">
+    </form>
+</div>
+</div>
+</body>
+
+<script type="text/javascript">
+  $(document).on('submit','#post-form',function(e){
+    e.preventDefault();
+
+    $.ajax({
+      type:'POST',
+      url:'/send',
+      data:{
+          message:$('#message').val(),
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+      },
+      success: function(data){
+         //alert(data)
+      }
+    });
+    document.getElementById('message').value = ''
+  });
+</script>
+</html>
